@@ -1,0 +1,98 @@
+# return 2d matrix of reports as integers
+def parse():
+  filename = "reports.txt"
+  reports = []
+  file = open(filename, "r")
+  for line in file:
+    str_report = line.split()
+    report = [int(numeric_string) for numeric_string in str_report]
+    reports.append(report)
+
+  return reports
+
+
+# check if a report is safe and all descending
+def isSafeDescending(report):
+  removedFlag = False
+  size = len(report)
+  i = 0
+  while i < size - 2:
+    # check descending
+    if (report[i] <= report[i + 1]):
+      if (not (removedFlag or report[i] <= report[i + 2])):
+        removedFlag = True
+        i += 2
+        continue
+      return False
+    # check safe
+    if (report[i] - report[i + 1] > 3):
+      if (not (removedFlag or report[i] - report[i + 2] > 3)):
+        removedFlag = True
+        i += 2
+        continue
+      return False
+    i += 1
+  # check last pair of levels only if we've already removed a level
+  if (removedFlag):
+    if (report[size - 2] <= report[size - 1]):
+      return False
+    if (report[size - 2] - report[size - 1] > 3):
+      return False
+  return True
+
+
+# check if a report is safe and all ascending
+def isSafeAscending(report):
+  removedFlag = False
+  size = len(report)
+  i = 0
+  while i < size - 2:
+    # check ascending
+    if (report[i] >= report[i + 1]):
+      if (not (removedFlag or report[i] >= report[i + 2])):
+        removedFlag = True
+        i += 2
+        # print(report[i])
+        continue
+      # print(removedFlag)
+      # print(report[i])
+      return False
+    # check safe
+    if (report[i + 1] - report[i] > 3):
+      if (not (removedFlag or report[i + 2] - report[i] > 3)):
+        removedFlag = True
+        i += 2
+        # print(report[i])
+        continue
+      # print(removedFlag)
+      # print(report[i])
+      return False
+    i += 1
+  # check last pair of levels only if we've already removed a level
+  if (removedFlag):
+    if (report[size - 2] >= report[size - 1]):
+      # print(removedFlag)
+      # print(report[i])
+      return False
+    if (report[size - 1] - report[size - 2] > 3):
+      # print(removedFlag)
+      # print(report[i])
+      return False
+  return True
+
+
+#count number of safe reports
+def main():
+  reports = parse()
+
+  numsafe = 0
+  for report in reports:
+    if isSafeDescending(report):
+      numsafe += 1
+    if isSafeAscending(report):
+      numsafe += 1
+
+  return numsafe
+
+
+print(main())
