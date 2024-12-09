@@ -30,7 +30,6 @@ def isPairSafeDescending(x, y):
 
 # check if a report is safe and all descending
 def isSafeDescending(report):
-  removedFlag = False
   size = len(report)
   i = 0
   while i < size - 1:
@@ -41,7 +40,6 @@ def isSafeDescending(report):
 
 # check if a report is safe and all ascending
 def isSafeAscending(report):
-  removedFlag = False
   size = len(report)
   i = 0
   while i < size - 1:
@@ -50,6 +48,24 @@ def isSafeAscending(report):
     i += 1
   return True
 
+def isSafeHelper(report):
+  if isSafeDescending(report):
+    return True
+  if isSafeAscending(report):
+    return True
+
+def isSafe(report):
+  if isSafeHelper(report):
+    return True
+
+  newReport = report.copy()
+  for i in range(len(report)):
+    report.pop(i)
+    if (isSafeHelper(report)):
+      return True
+    report = newReport.copy()
+  
+  return False
 
 #count number of safe reports
 def main():
@@ -57,9 +73,7 @@ def main():
 
   numsafe = 0
   for report in reports:
-    if isSafeDescending(report):
-      numsafe += 1
-    if isSafeAscending(report):
+    if isSafe(report):
       numsafe += 1
 
   return numsafe
