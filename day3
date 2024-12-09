@@ -1,0 +1,41 @@
+import re
+
+# read memory and return a list of all valid mul instructions
+def findMatches():
+  filename = "memory.txt"
+  file = open(filename, "r")
+  memory = file.read()
+  
+  # return an array of all mul instructions 
+  return re.findall("mul\(\d+,\d+\)", memory)
+
+# given a multiply instruction, return an array of the two inputs as integers
+def parseInstruction(instr):
+  instructionLength = 4
+  # get inputs as strings
+  str_inputs = instr[instructionLength:len(instr)-1]
+  str_inputs = str_inputs.split(",")
+
+  # convert to integers
+  inputs = [int(str) for str in str_inputs]
+  return inputs
+
+# given a multiply instruction, return the result of the operation
+def multiply(instr):
+  inputs = parseInstruction(instr)
+
+  return inputs[0] * inputs[1]
+
+#sum all mul instructions in memory
+def main():
+  matches = findMatches()
+
+  sum = 0
+  
+  for match in matches:
+    sum += multiply(match)
+
+  return sum
+
+
+print(main())
